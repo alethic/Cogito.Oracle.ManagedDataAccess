@@ -10,7 +10,7 @@ namespace Oracle.ManagedDataAccess.Extensions
     /// <summary>
     /// Provides methods for parsing <see cref="OracleDbType"/> values.
     /// </summary>
-    public static class OracleDbTypeParser
+    public static class OracleDbTypeNameParser
     {
 
         static readonly (string Name, OracleDbType DbType)[] dbTypeMapping = new[]

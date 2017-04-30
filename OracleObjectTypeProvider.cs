@@ -144,7 +144,7 @@ WHERE       ALL_TYPES.TYPE_NAME = :type_name
                             (string)i.Element("NAME"),
                             (string)i.Element("TYPE_OWNER"),
                             (string)i.Element("TYPE_NAME"),
-                            OracleDbTypeParser.ParseDbTypeName((string)i.Element("TYPE_NAME")),
+                            OracleDbTypeNameParser.ParseDbTypeName((string)i.Element("TYPE_NAME")),
                             (int?)i.Element("LENGTH"),
                             (int?)i.Element("PRECISION"),
                             (int?)i.Element("SCALE")))
@@ -167,7 +167,7 @@ WHERE       ALL_TYPES.TYPE_NAME = :type_name
 
                     // with DbType body
                     if (ELEM_TYPE_OWNER == null &&
-                        OracleDbTypeParser.TryParseDbTypeName(ELEM_TYPE_NAME, out OracleDbType itemDbType))
+                        OracleDbTypeNameParser.TryParseDbTypeName(ELEM_TYPE_NAME, out OracleDbType itemDbType))
                         return new OracleObjectType(
                             TYPE_OWNER,
                             TYPE_NAME,
@@ -197,7 +197,7 @@ WHERE       ALL_TYPES.TYPE_NAME = :type_name
                 {
                     // with DbType body
                     if (ELEM_TYPE_OWNER == null &&
-                        OracleDbTypeParser.TryParseDbTypeName(ELEM_TYPE_NAME, out OracleDbType itemDbType))
+                        OracleDbTypeNameParser.TryParseDbTypeName(ELEM_TYPE_NAME, out OracleDbType itemDbType))
                         return new OracleObjectType(
                             TYPE_OWNER,
                             TYPE_NAME,
