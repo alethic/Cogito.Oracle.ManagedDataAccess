@@ -71,7 +71,6 @@
     <Compile Include="OracleDbTypeDef.cs" />
     <Compile Include="OracleDbTypeParser.cs" />
     <Compile Include="OracleObjectDbType.cs" />
-    <Compile Include="OracleObjectJsonSerializer.cs" />
     <Compile Include="OracleObjectType.cs" />
     <Compile Include="OracleObjectTypeAttribute.cs" />
     <Compile Include="OracleObjectTypeAttributeCollection.cs" />
