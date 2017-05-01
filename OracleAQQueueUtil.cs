@@ -133,6 +133,7 @@ BEGIN
     :message_count := 1;
 
     :message_id    := message_id;
+
     SELECT  XMLELEMENT(MESSAGE,
                 XMLELEMENT(PRIORITY, message_properties.priority),
                 XMLELEMENT(DELAY, message_properties.delay),
@@ -151,7 +152,12 @@ BEGIN
                 XMLELEMENT(DELIVERY_MODE, message_properties.delivery_mode))
     INTO    :message_properties
     FROM    DUAL;
-    :message_payload := XMLTYPE(message_payload);
+
+    IF message_payload IS NOT NULL THEN
+        :message_payload := XMLTYPE(message_payload);
+    ELSE
+        :message_payload := NULL;
+    END IF;
 
 EXCEPTION
     WHEN no_messages
@@ -290,6 +296,7 @@ BEGIN
         message_payload     := message_payload_array(idx);
 
         :message_id(idx)    := message_id;
+
         SELECT  XMLELEMENT(MESSAGE,
                 XMLELEMENT(PRIORITY, message_properties.priority),
                 XMLELEMENT(DELAY, message_properties.delay),
@@ -308,7 +315,12 @@ BEGIN
                 XMLELEMENT(DELIVERY_MODE, message_properties.delivery_mode)).getClobVal()
         INTO    :message_properties(idx)
         FROM DUAL;
-        :message_payload(idx) := XMLTYPE(message_payload).getClobVal();
+
+        IF message_payload IS NOT NULL THEN
+            :message_payload(idx) := XMLTYPE(message_payload).getClobVal();
+        ELSE
+            :message_payload(idx) := NULL;
+        END IF;
     END LOOP;
 
 EXCEPTION
@@ -388,7 +400,7 @@ END;";
                         ((OracleDecimal)messageCountParameter.Value).ToInt32(),
                         ((OracleBinary[])messageIdParameter.Value)?.Select(i => i.Value)?.ToArray() ?? new byte[0][],
                         ((OracleString[])messagePropertiesParameter.Value)?.Select(i => i.Value)?.ToArray() ?? new string[0],
-                        ((OracleString[])messagePayloadParameter.Value)?.Select(i => i.Value)?.ToArray() ?? new string[0])
+                        ((OracleString[])messagePayloadParameter.Value)?.Select(i => !i.IsNull ? i.Value : null)?.ToArray() ?? new string[0])
                     .ToArray();
             }
         }
@@ -461,12 +473,10 @@ END;";
                 throw new ArgumentNullException(nameof(messageId));
             if (properties == null)
                 throw new ArgumentNullException(nameof(properties));
-            if (payload == null)
-                throw new ArgumentNullException(nameof(payload));
 
             return new OracleAQMessage(
                 messageId,
-                OracleObjectXmlTransferSerializer.Deserialize(payloadType, XDocument.Parse(payload)),
+                OracleObjectXmlTransferSerializer.Deserialize(payloadType, payload != null ? XDocument.Parse(payload) : null),
                 DeserializeMessageProperties(XDocument.Parse(properties)));
         }
 
