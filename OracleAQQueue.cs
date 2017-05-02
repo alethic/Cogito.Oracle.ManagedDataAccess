@@ -230,6 +230,14 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// <param name="options"></param>
         public Task<byte[]> EnqueueAsync(OracleAQMessage message, OracleAQEnqueueOptions options)
         {
+            if (message == null)
+                throw new ArgumentNullException(nameof(message));
+            if (options == null)
+                throw new ArgumentNullException(nameof(options));
+
+            // validate message
+            message.ThrowIfInvalid();
+
             switch (MessageType)
             {
                 case OracleAQMessageType.Raw:
@@ -269,6 +277,15 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// <param name="options"></param>
         public Task<byte[][]> EnqueueArrayAsync(OracleAQMessage[] messages, OracleAQEnqueueOptions options)
         {
+            if (messages == null)
+                throw new ArgumentNullException(nameof(messages));
+            if (options == null)
+                throw new ArgumentNullException(nameof(options));
+
+            // validate messages
+            foreach (var message in messages)
+                message.ThrowIfInvalid();
+
             switch (MessageType)
             {
                 case OracleAQMessageType.Raw:

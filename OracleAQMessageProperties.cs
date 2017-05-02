@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace Oracle.ManagedDataAccess.Extensions
 {
@@ -78,6 +79,29 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// The user property attribute is optional. It is used to store additional information about the payload.
         /// </summary>
         public string UserProperty { get; set; }
+
+        /// <summary>
+        /// Throws an exception if the message is not valid.
+        /// </summary>
+        /// <returns></returns>
+        internal bool ThrowIfInvalid()
+        {
+            if (Correlation != null)
+            {
+                if (Correlation.Length > 128)
+                    throw new OracleAQException($"Message correlation value cannot exceed 128 characters.");
+                if (Encoding.UTF8.GetByteCount(Correlation) != Correlation.Length)
+                    throw new OracleAQException($"Message correlation value must be ASCII.");
+            }
+
+            if (OriginalMessageId != null)
+            {
+                if (OriginalMessageId.Length > 16)
+                    throw new OracleAQException("Original message ID length cannot exceed 16.");
+            }
+
+            return true;
+        }
 
     }
 
