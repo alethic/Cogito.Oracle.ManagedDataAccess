@@ -564,7 +564,7 @@ BEGIN
     message_properties.priority         := message_properties_xml.extract('/MESSAGE/PRIORITY/text()').getNumberVal();
  -- message_properties.delay            := message_properties_xml.extract('/MESSAGE/DELAY/text()').getNumberVal();
  -- message_properties.expiration       := message_properties_xml.extract('/MESSAGE/EXPIRATION/text()').getNumberVal();
- -- message_properties.correlation      := message_properties_xml.extract('/MESSAGE/CORRELATION/text()').getStringVal();
+    message_properties.correlation      := message_properties_xml.extract('/MESSAGE/CORRELATION/text()').getStringVal();
  -- message_properties.exception_queue  := message_properties_xml('/MESSAGE/EXCEPTION_QUEUE/text()').getStringVal();
  -- message_properties.sender_id        := message_properties_xml.extract('/MESSAGE/SENDER_ID/text()').getStringVal();
  -- message_properties.user_property    := message_properties_xml.extract('/MESSAGE/USER_PROPERTY/text()').getStringVal();
@@ -592,14 +592,14 @@ END;";
 
                 var messagePropertiesXmlParameter = cmd.CreateParameter();
                 messagePropertiesXmlParameter.ParameterName = ":message_properties";
-                messagePropertiesXmlParameter.OracleDbType = OracleDbType.NVarchar2;
+                messagePropertiesXmlParameter.OracleDbType = OracleDbType.Varchar2;
                 messagePropertiesXmlParameter.Direction = ParameterDirection.Input;
                 messagePropertiesXmlParameter.Value = SerializeMessageProperties(message.Properties).ToString();
                 cmd.Parameters.Add(messagePropertiesXmlParameter);
 
                 var messagePayloadXmlParameter = cmd.CreateParameter();
                 messagePayloadXmlParameter.ParameterName = ":message_payload";
-                messagePayloadXmlParameter.OracleDbType = OracleDbType.NVarchar2;
+                messagePayloadXmlParameter.OracleDbType = OracleDbType.Varchar2;
                 messagePayloadXmlParameter.Direction = ParameterDirection.Input;
                 messagePayloadXmlParameter.Value = OracleObjectXmlTransferSerializer.Serialize((OracleObjectValue)message.Payload ?? payloadType.CreateNullValue()).ToString();
                 cmd.Parameters.Add(messagePayloadXmlParameter);

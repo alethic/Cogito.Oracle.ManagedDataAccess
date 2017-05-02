@@ -189,6 +189,15 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// </summary>
         public string TransactionGroup { get => properties.TransactionGroup; }
 
+        /// <summary>
+        /// Throws an exception if the message is invalid.
+        /// </summary>
+        /// <returns></returns>
+        internal bool ThrowIfInvalid()
+        {
+            return Properties.ThrowIfInvalid();
+        }
+
 
     }
 
