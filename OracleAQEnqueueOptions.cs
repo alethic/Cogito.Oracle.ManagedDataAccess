@@ -5,7 +5,7 @@
     /// The <see cref="OracleAQEnqueueOptions"/> class represents the options available when enqueuing a message to an <see cref="OracleAQQueue"/>.
     /// </summary>
     public class OracleAQEnqueueOptions
-    {hgfhgf
+    {
 
         /// <summary>
         /// Specifies the delivery mode of the message being enqueued.
