@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Xml;
-using Oracle.ManagedDataAccess.Types;
 
 namespace Oracle.ManagedDataAccess.Extensions
 {

@@ -533,8 +533,7 @@ END;";
                 throw new ArgumentNullException(nameof(options));
             if (message == null)
                 throw new ArgumentNullException(nameof(message));
-
-
+            
             // fetch UDT type information
             var payloadType = await queue.GetPayloadTypeAsync();
             if (payloadType == null)

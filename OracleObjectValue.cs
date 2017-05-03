@@ -112,7 +112,7 @@ namespace Oracle.ManagedDataAccess.Extensions
             if (obj == null)
                 return IsNull;
 
-            // must at least be UDT
+            // must at least be object type
             if (obj is OracleObjectValue other)
             {
                 // types must match

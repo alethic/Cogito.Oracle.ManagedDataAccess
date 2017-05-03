@@ -142,7 +142,7 @@ namespace Oracle.ManagedDataAccess.Extensions
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
 
-            // this is terribly inefficient; watch https://github.com/dotnet/corefx/issues/519
+            // this is inefficient; watch https://github.com/dotnet/corefx/issues/519
             return BitConverter.ToString(value).Replace("-", string.Empty);
         }
 

@@ -42,7 +42,7 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// <returns></returns>
         public static async Task<OracleObjectType> GetObjectMetadataAsync(OracleConnection connection, string typeName)
         {
-            return await DeserializeUdtTypeMetadata(connection, await GetObjectMetadataXmlAsync(connection, typeName));
+            return await DeserializeTypeMetadata(connection, await GetTypeMetadataXmlAsync(connection, typeName));
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// <param name="connection"></param>
         /// <param name="typeName"></param>
         /// <returns></returns>
-        static async Task<XDocument> GetObjectMetadataXmlAsync(OracleConnection connection, string typeName)
+        static async Task<XDocument> GetTypeMetadataXmlAsync(OracleConnection connection, string typeName)
         {
             if (connection == null)
                 throw new ArgumentNullException(nameof(connection));
@@ -99,7 +99,7 @@ WHERE       ALL_TYPES.TYPE_NAME = :type_name
                 // collect type metadata
                 var typeNameParameter = cmd.CreateParameter();
                 typeNameParameter.ParameterName = ":type_name";
-                typeNameParameter.OracleDbType = global::Oracle.ManagedDataAccess.Client.OracleDbType.Varchar2;
+                typeNameParameter.OracleDbType = OracleDbType.Varchar2;
                 typeNameParameter.Direction = ParameterDirection.Input;
                 typeNameParameter.Value = typeName;
                 cmd.Parameters.Add(typeNameParameter);
@@ -114,11 +114,11 @@ WHERE       ALL_TYPES.TYPE_NAME = :type_name
         }
 
         /// <summary>
-        /// Deserializes UDT type metadata into a <see cref="OracleObjectType"/>.
+        /// Deserializes type metadata into a <see cref="OracleObjectType"/>.
         /// </summary>
         /// <param name="xml"></param>
         /// <returns></returns>
-        static async Task<OracleObjectType> DeserializeUdtTypeMetadata(OracleConnection connection, XDocument xml)
+        static async Task<OracleObjectType> DeserializeTypeMetadata(OracleConnection connection, XDocument xml)
         {
             if (connection == null)
                 throw new ArgumentNullException(nameof(connection));
