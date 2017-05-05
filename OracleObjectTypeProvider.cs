@@ -147,8 +147,7 @@ WHERE       ALL_TYPES.TYPE_NAME = :type_name
                             OracleDbTypeNameParser.ParseDbTypeName((string)i.Element("TYPE_NAME")),
                             (int?)i.Element("LENGTH"),
                             (int?)i.Element("PRECISION"),
-                            (int?)i.Element("SCALE")))
-                            .ToDictionary(i => i.Name, i => i));
+                            (int?)i.Element("SCALE"))));
 
             // collection type
             if (TYPE_CODE == "COLLECTION")

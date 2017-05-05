@@ -16,7 +16,7 @@ namespace Oracle.ManagedDataAccess.Extensions
 
         // Object
         readonly OracleObjectTypeAttributeCollection attributes;
-        
+
         // Collection
         readonly OracleObjectDbType itemObjectDbType = OracleObjectDbType.DbType;
         readonly OracleDbTypeDef itemDbTypeDef;
@@ -31,7 +31,7 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// <param name="owner"></param>
         /// <param name="name"></param>
         /// <param name="attributes"></param>
-        internal OracleObjectType(string owner, string name, IDictionary<string, OracleObjectTypeAttribute> attributes)
+        internal OracleObjectType(string owner, string name, IEnumerable<OracleObjectTypeAttribute> attributes)
         {
             if (string.IsNullOrWhiteSpace(owner))
                 throw new ArgumentException(nameof(owner));

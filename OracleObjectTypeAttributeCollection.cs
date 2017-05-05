@@ -15,32 +15,44 @@ namespace Oracle.ManagedDataAccess.Extensions
         IEnumerable<OracleObjectTypeAttribute>
     {
 
-        readonly IDictionary<string, OracleObjectTypeAttribute> attributes;
+        readonly OracleObjectTypeAttribute[] attributes;
+        readonly Dictionary<string, OracleObjectTypeAttribute> attributesByName;
 
         /// <summary>
         /// Initializes a new instance.
         /// </summary>
         /// <param name="attributes"></param>
-        internal OracleObjectTypeAttributeCollection(IDictionary<string, OracleObjectTypeAttribute> attributes)
+        internal OracleObjectTypeAttributeCollection(IEnumerable<OracleObjectTypeAttribute> attributes)
         {
-            this.attributes = attributes ?? throw new ArgumentNullException(nameof(attributes));
+            this.attributes = attributes?.ToArray() ?? throw new ArgumentNullException(nameof(attributes));
+            this.attributesByName = attributes?.ToDictionary(i => i.Name, i => i);
         }
+
+        /// <summary>
+        /// Gets the attribute at the specified position.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public OracleObjectTypeAttribute this[int index] => attributes[index];
 
         /// <summary>
         /// Gets the attribute with the specified name.
         /// </summary>
         /// <param name="attributeName"></param>
         /// <returns></returns>
-        public OracleObjectTypeAttribute this[string attributeName]
-        {
-            get { return attributes.GetOrDefault(attributeName); }
-        }
+        public OracleObjectTypeAttribute this[string attributeName] => attributesByName.GetOrDefault(attributeName);
+
+        /// <summary>
+        /// Gets the number of attributes in the collection.
+        /// </summary>
+        public int Count => attributes.Length;
 
         #region IEnumerable
 
         public IEnumerator<OracleObjectTypeAttribute> GetEnumerator()
         {
-            return attributes.Values.GetEnumerator();
+            foreach (var i in attributes)
+                yield return i;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -57,9 +69,9 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// <returns></returns>
         public override bool Equals(object obj)
         {
-            return base.Equals(obj) || 
+            return base.Equals(obj) ||
                 obj is OracleObjectTypeAttributeCollection other &&
-                Enumerable.SequenceEqual(other.attributes.OrderBy(i => i.Key), attributes.OrderBy(i => i.Key));
+                Enumerable.SequenceEqual(other.attributesByName.OrderBy(i => i.Key), attributesByName.OrderBy(i => i.Key));
         }
 
         /// <summary>
