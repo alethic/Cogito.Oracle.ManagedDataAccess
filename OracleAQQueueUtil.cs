@@ -14,7 +14,7 @@ namespace Oracle.ManagedDataAccess.Extensions
 {
 
     /// <summary>
-    /// Provides utility methods for working with queues.
+    /// Provides the underlying implementation for interacting with Oracle queues.
     /// </summary>
     public static class OracleAQQueueUtil
     {
@@ -398,9 +398,9 @@ END;";
                 return ReadUdtMessages(
                         payloadType,
                         ((OracleDecimal)messageCountParameter.Value).ToInt32(),
-                        ((OracleBinary[])messageIdParameter.Value)?.Select(i => i.Value)?.ToArray() ?? new byte[0][],
-                        ((OracleString[])messagePropertiesParameter.Value)?.Select(i => i.Value)?.ToArray() ?? new string[0],
-                        ((OracleString[])messagePayloadParameter.Value)?.Select(i => !i.IsNull ? i.Value : null)?.ToArray() ?? new string[0])
+                        ((OracleBinary[])messageIdParameter.Value)?.Select(i => i.Value)?.ToArray() ?? Array.Empty<byte[]>(),
+                        ((OracleString[])messagePropertiesParameter.Value)?.Select(i => i.Value)?.ToArray() ?? Array.Empty<string>(),
+                        ((OracleString[])messagePayloadParameter.Value)?.Select(i => !i.IsNull ? i.Value : null)?.ToArray() ?? Array.Empty<string>())
                     .ToArray();
             }
         }
@@ -533,7 +533,7 @@ END;";
                 throw new ArgumentNullException(nameof(options));
             if (message == null)
                 throw new ArgumentNullException(nameof(message));
-            
+
             // fetch UDT type information
             var payloadType = await queue.GetPayloadTypeAsync();
             if (payloadType == null)
