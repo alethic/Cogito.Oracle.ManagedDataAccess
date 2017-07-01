@@ -14,7 +14,7 @@ namespace Oracle.ManagedDataAccess.Extensions
     public class OracleAQMessage
     {
 
-        OracleAQMessageProperties properties;
+        readonly OracleAQMessageProperties properties;
         object payload;
 
         /// <summary>

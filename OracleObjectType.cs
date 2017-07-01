@@ -116,10 +116,7 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// <summary>
         /// Gets the set of attributes that are available on the UDT.
         /// </summary>
-        public OracleObjectTypeAttributeCollection Attributes
-        {
-            get { return attributes; }
-        }
+        public OracleObjectTypeAttributeCollection Attributes => attributes;
 
         /// <summary>
         /// Describes the type of objects to expect as items.
