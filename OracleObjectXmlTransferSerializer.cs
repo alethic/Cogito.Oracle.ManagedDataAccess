@@ -57,7 +57,7 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// <param name="type"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        static object DeserializeOracleDbTypeFromXmlValue(global::Oracle.ManagedDataAccess.Client.OracleDbType type, string value)
+        static object DeserializeOracleDbTypeFromXmlValue(OracleDbType type, string value)
         {
             // properly handle null values
             if (value == null)
@@ -66,6 +66,8 @@ namespace Oracle.ManagedDataAccess.Extensions
             // otherwise; handle specific types
             switch (type)
             {
+                case OracleDbType.Int32:
+                    return int.Parse(value);
                 case OracleDbType.Varchar2:
                     return value;
                 case OracleDbType.NVarchar2:
@@ -129,6 +131,8 @@ namespace Oracle.ManagedDataAccess.Extensions
 
             switch (type)
             {
+                case OracleDbType.Int32:
+                    return value != null ? new XElement(name, value) : null;
                 case OracleDbType.Varchar2:
                     return value != null ? new XElement(name, value) : null;
                 case OracleDbType.NVarchar2:
