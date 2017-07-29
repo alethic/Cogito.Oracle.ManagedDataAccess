@@ -221,7 +221,6 @@ namespace Oracle.ManagedDataAccess.Extensions
             return value;
         }
 
-
     }
 
 }
