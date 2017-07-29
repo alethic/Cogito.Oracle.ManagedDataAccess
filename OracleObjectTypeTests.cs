@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml.Linq;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Oracle.ManagedDataAccess.Client;
@@ -13,6 +14,7 @@ namespace Oracle.ManagedDataAccess.Extensions.Tests
 
         static readonly OracleObjectType TestOracleObjectType = new OracleObjectType("TEST", "TYPE", new OracleObjectTypeAttribute[]
         {
+            new OracleObjectTypeAttribute("Int32", null, "NUMBER", OracleDbType.Int32, null, null, null),
             new OracleObjectTypeAttribute("Attr1", null, "VARCHAR", OracleDbType.Varchar2, 20, null, null),
             new OracleObjectTypeAttribute("Attr2", null, "VARCHAR", OracleDbType.Varchar2, 20, null, null),
             new OracleObjectTypeAttribute("Attr3", null, "VARCHAR", OracleDbType.Varchar2, 20, null, null),
@@ -22,13 +24,16 @@ namespace Oracle.ManagedDataAccess.Extensions.Tests
         [TestMethod]
         public void Test_basic_type_def()
         {
-            Assert.IsTrue(TestOracleObjectType.Attributes.Count == 4);
-            Assert.IsTrue(TestOracleObjectType.Attributes[2].Name == "Attr3");
-            Assert.IsTrue(TestOracleObjectType.Attributes[2].TypeName == "VARCHAR");
-            Assert.IsTrue(TestOracleObjectType.Attributes[2].DbType == OracleDbType.Varchar2);
-            Assert.IsTrue(TestOracleObjectType.Attributes[3].Name == "Attr4");
-            Assert.IsTrue(TestOracleObjectType.Attributes[3].TypeName == "BLOB");
-            Assert.IsTrue(TestOracleObjectType.Attributes[3].DbType == OracleDbType.Blob);
+            Assert.IsTrue(TestOracleObjectType.Attributes.Count == 5);
+            Assert.IsTrue(TestOracleObjectType.Attributes[0].Name == "Int32");
+            Assert.IsTrue(TestOracleObjectType.Attributes[0].TypeName == "NUMBER");
+            Assert.IsTrue(TestOracleObjectType.Attributes[0].DbType == OracleDbType.Int32);
+            Assert.IsTrue(TestOracleObjectType.Attributes[3].Name == "Attr3");
+            Assert.IsTrue(TestOracleObjectType.Attributes[3].TypeName == "VARCHAR");
+            Assert.IsTrue(TestOracleObjectType.Attributes[3].DbType == OracleDbType.Varchar2);
+            Assert.IsTrue(TestOracleObjectType.Attributes[4].Name == "Attr4");
+            Assert.IsTrue(TestOracleObjectType.Attributes[4].TypeName == "BLOB");
+            Assert.IsTrue(TestOracleObjectType.Attributes[4].DbType == OracleDbType.Blob);
         }
 
         /// <summary>
@@ -38,6 +43,7 @@ namespace Oracle.ManagedDataAccess.Extensions.Tests
         public void Test_xml_serialization()
         {
             var o = TestOracleObjectType.CreateValue();
+            o["Int32"] = 123123;
             o["Attr1"] = "value1";
             o["Attr2"] = "value2";
             o["Attr3"] = "value3";
@@ -46,6 +52,7 @@ namespace Oracle.ManagedDataAccess.Extensions.Tests
 
             var t = XDocument.Parse(@"
                 <TYPE>
+                  <Int32>123123</Int32>
                   <Attr1>value1</Attr1>
                   <Attr2>value2</Attr2>
                   <Attr3>value3</Attr3>
@@ -60,6 +67,7 @@ namespace Oracle.ManagedDataAccess.Extensions.Tests
         {
             var t = XDocument.Parse(@"
                 <TYPE>
+                  <Int32>123123</Int32>
                   <Attr1>value1</Attr1>
                   <Attr2>value2</Attr2>
                   <Attr3>value3</Attr3>
@@ -67,6 +75,7 @@ namespace Oracle.ManagedDataAccess.Extensions.Tests
                 </TYPE>");
             var x = OracleObjectXmlTransferSerializer.Deserialize(TestOracleObjectType, t);
 
+            Assert.IsTrue((int)x["Int32"] == 123123);
             Assert.IsTrue((string)x["Attr1"] == "value1");
             Assert.IsTrue((string)x["Attr2"] == "value2");
             Assert.IsTrue((string)x["Attr3"] == "value3");
