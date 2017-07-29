@@ -66,6 +66,8 @@ namespace Oracle.ManagedDataAccess.Extensions
             // otherwise; handle specific types
             switch (type)
             {
+                case OracleDbType.Varchar2:
+                    return value;
                 case OracleDbType.Blob:
                     return ConvertHexToByteArray(value);
                 default:
@@ -125,6 +127,8 @@ namespace Oracle.ManagedDataAccess.Extensions
 
             switch (type)
             {
+                case OracleDbType.Varchar2:
+                    return value != null ? new XElement(name, value) : null;
                 case OracleDbType.Blob:
                     return value != null ? new XElement(name, ConvertByteArrayToHex((byte[])value)) : null;
                 default:
