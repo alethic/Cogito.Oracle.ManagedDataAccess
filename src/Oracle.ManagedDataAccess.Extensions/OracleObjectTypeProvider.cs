@@ -42,7 +42,18 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// <returns></returns>
         public static async Task<OracleObjectType> GetObjectMetadataAsync(OracleConnection connection, string typeName)
         {
-            return await DeserializeTypeMetadata(connection, await GetTypeMetadataXmlAsync(connection, typeName));
+            if (connection == null)
+                throw new ArgumentNullException(nameof(connection));
+            if (typeName == null)
+                throw new ArgumentNullException(nameof(typeName));
+            if (string.IsNullOrEmpty(typeName))
+                throw new ArgumentOutOfRangeException(nameof(typeName));
+
+            var metadataXml = await GetTypeMetadataXmlAsync(connection, typeName);
+            if (metadataXml == null)
+                throw new OracleExtensionsException($"Unable to locate type metadata for '{typeName}'.");
+
+            return await DeserializeTypeMetadata(connection, metadataXml);
         }
 
         /// <summary>

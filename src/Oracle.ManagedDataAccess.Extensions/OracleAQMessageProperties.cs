@@ -89,15 +89,15 @@ namespace Oracle.ManagedDataAccess.Extensions
             if (Correlation != null)
             {
                 if (Correlation.Length > 128)
-                    throw new OracleAQException($"Message correlation value cannot exceed 128 characters.", OracleAQErrorSeverity.Permanent);
+                    throw new OracleAQException($"Message correlation value cannot exceed 128 characters.", OracleErrorSeverity.Permanent);
                 if (Encoding.UTF8.GetByteCount(Correlation) != Correlation.Length)
-                    throw new OracleAQException($"Message correlation value must be ASCII.", OracleAQErrorSeverity.Permanent);
+                    throw new OracleAQException($"Message correlation value must be ASCII.", OracleErrorSeverity.Permanent);
             }
 
             if (OriginalMessageId != null)
             {
                 if (OriginalMessageId.Length > 16)
-                    throw new OracleAQException("Original message ID length cannot exceed 16.", OracleAQErrorSeverity.Permanent);
+                    throw new OracleAQException("Original message ID length cannot exceed 16.", OracleErrorSeverity.Permanent);
             }
 
             return true;

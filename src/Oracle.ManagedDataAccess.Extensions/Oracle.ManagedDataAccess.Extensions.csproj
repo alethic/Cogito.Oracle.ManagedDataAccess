@@ -58,7 +58,8 @@
     <Compile Include="OracleAQDequeueMode.cs" />
     <Compile Include="OracleAQDequeueOptions.cs" />
     <Compile Include="OracleAQEnqueueOptions.cs" />
-    <Compile Include="OracleAQErrorSeverity.cs" />
+    <Compile Include="OracleErrorSeverity.cs" />
+    <Compile Include="OracleExtensionsException.cs" />
     <Compile Include="OracleAQException.cs" />
     <Compile Include="OracleAQMessage.cs" />
     <Compile Include="OracleAQMessageDeliveryMode.cs" />

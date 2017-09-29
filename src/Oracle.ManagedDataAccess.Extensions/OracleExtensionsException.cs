@@ -4,17 +4,17 @@ namespace Oracle.ManagedDataAccess.Extensions
 {
 
     /// <summary>
-    /// Describes an exception that happens during Oracle AQ operations.
+    /// Describes an exception that happens during Oracle extension operations.
     /// </summary>
-    public class OracleAQException :
-        OracleExtensionsException
+    public class OracleExtensionsException :
+        Exception
     {
 
         /// <summary>
         /// Initializes a new instance.
         /// </summary>
         /// <param name="message"></param>
-        public OracleAQException(string message) :
+        public OracleExtensionsException(string message) :
             base(message)
         {
 
@@ -25,11 +25,16 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// </summary>
         /// <param name="message"></param>
         /// <param name="severity"></param>
-        public OracleAQException(string message, OracleErrorSeverity severity) :
+        public OracleExtensionsException(string message, OracleErrorSeverity severity) :
             this(message)
         {
             Severity = severity;
         }
+
+        /// <summary>
+        /// Gets the severity of the exception.
+        /// </summary>
+        public OracleErrorSeverity Severity { get; set; } = OracleErrorSeverity.Transient;
 
     }
 
