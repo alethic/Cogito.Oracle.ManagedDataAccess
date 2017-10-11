@@ -44,9 +44,9 @@ namespace Oracle.ManagedDataAccess.Extensions
             switch (wait)
             {
                 case -1:
-                    return "FOREVER";
+                    return "DBMS_AQ.FOREVER";
                 case 0:
-                    return "NO_WAIT";
+                    return "DBMS_AQ.NO_WAIT";
                 default:
                     return wait.ToString();
             }
