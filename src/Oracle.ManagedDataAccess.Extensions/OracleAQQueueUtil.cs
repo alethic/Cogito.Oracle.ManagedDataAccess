@@ -16,7 +16,7 @@ namespace Oracle.ManagedDataAccess.Extensions
     /// <summary>
     /// Provides the underlying implementation for interacting with Oracle queues.
     /// </summary>
-    public static class OracleAQQueueUtil
+    static class OracleAQQueueUtil
     {
 
         static string FormatDequeueMode(OracleAQDequeueMode mode)
@@ -57,10 +57,12 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// </summary>
         /// <param name="queue"></param>
         /// <param name="options"></param>
+        /// <param name="logger"></param>
         /// <returns></returns>
         public static async Task<OracleAQMessage> DequeueRawAsync(
             OracleAQQueue queue,
-            OracleAQDequeueOptions options)
+            OracleAQDequeueOptions options,
+            OracleLogger logger)
         {
             throw new NotImplementedException();
         }
@@ -71,11 +73,13 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// <param name="queue"></param>
         /// <param name="options"></param>
         /// <param name="count"></param>
+        /// <param name="logger"></param>
         /// <returns></returns>
         public static async Task<OracleAQMessage[]> DequeueRawArrayAsync(
             OracleAQQueue queue,
             OracleAQDequeueOptions options,
-            int count)
+            int count,
+            OracleLogger logger)
         {
             throw new NotImplementedException();
         }
@@ -86,15 +90,19 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// <param name="connection"></param>
         /// <param name="queue"></param>
         /// <param name="options"></param>
+        /// <param name="log"></param>
         /// <returns></returns>
         public static async Task<OracleAQMessage> DequeueUdtAsync(
             OracleAQQueue queue,
-            OracleAQDequeueOptions options)
+            OracleAQDequeueOptions options,
+            OracleLogger log)
         {
             if (queue == null)
                 throw new ArgumentNullException(nameof(queue));
             if (options == null)
                 throw new ArgumentNullException(nameof(options));
+            if (log == null)
+                throw new ArgumentNullException(nameof(log));
 
             // fetch UDT type information
             var payloadType = await queue.GetPayloadTypeAsync();
@@ -210,6 +218,7 @@ END;";
                 messageCountParameter.OracleDbType = OracleDbType.Decimal;
                 cmd.Parameters.Add(messageCountParameter);
 
+                log.Debug(cmd.CommandText);
                 await cmd.ExecuteNonQueryAsync();
 
                 // parses the result into the set of messages
@@ -227,16 +236,20 @@ END;";
         /// <param name="connection"></param>
         /// <param name="queue"></param>
         /// <param name="options"></param>
+        /// <param name="log"></param>
         /// <returns></returns>
         public static async Task<OracleAQMessage[]> DequeueUdtArrayAsync(
             OracleAQQueue queue,
             OracleAQDequeueOptions options,
-            int count)
+            int count,
+            OracleLogger log)
         {
             if (queue == null)
                 throw new ArgumentNullException(nameof(queue));
             if (options == null)
                 throw new ArgumentNullException(nameof(options));
+            if (log == null)
+                throw new ArgumentNullException(nameof(log));
 
             // fetch UDT type information
             var payloadType = await queue.GetPayloadTypeAsync();
@@ -392,6 +405,7 @@ END;";
                 messageCountParameter.OracleDbType = OracleDbType.Decimal;
                 cmd.Parameters.Add(messageCountParameter);
 
+                log.Debug(cmd.CommandText);
                 await cmd.ExecuteNonQueryAsync();
 
                 // parses the result set into the set of messages
@@ -410,10 +424,12 @@ END;";
         /// </summary>
         /// <param name="queue"></param>
         /// <param name="options"></param>
+        /// <param name="logger"></param>
         /// <returns></returns>
         public static async Task<OracleAQMessage> DequeueXmlAsync(
             OracleAQQueue queue,
-            OracleAQDequeueOptions options)
+            OracleAQDequeueOptions options,
+            OracleLogger logger)
         {
             throw new NotImplementedException();
         }
@@ -424,11 +440,13 @@ END;";
         /// <param name="queue"></param>
         /// <param name="options"></param>
         /// <param name="count"></param>
+        /// <param name="logger"></param>
         /// <returns></returns>
         public static async Task<OracleAQMessage[]> DequeueXmlArrayAsync(
             OracleAQQueue queue,
             OracleAQDequeueOptions options,
-            int count)
+            int count,
+            OracleLogger logger)
         {
             throw new NotImplementedException();
         }
@@ -486,8 +504,13 @@ END;";
         /// <param name="queue"></param>
         /// <param name="options"></param>
         /// <param name="message"></param>
+        /// <param name="log"></param>
         /// <returns></returns>
-        public static Task<byte[]> EnqueueRawAsync(OracleAQQueue queue, OracleAQEnqueueOptions options, OracleAQMessage message)
+        public static Task<byte[]> EnqueueRawAsync(
+            OracleAQQueue queue,
+            OracleAQEnqueueOptions options, 
+            OracleAQMessage message,
+            OracleLogger log)
         {
             if (queue == null)
                 throw new ArgumentNullException(nameof(queue));
@@ -495,6 +518,8 @@ END;";
                 throw new ArgumentNullException(nameof(options));
             if (message == null)
                 throw new ArgumentNullException(nameof(message));
+            if (log == null)
+                throw new ArgumentNullException(nameof(log));
 
             throw new NotImplementedException();
         }
@@ -524,8 +549,13 @@ END;";
         /// <param name="queue"></param>
         /// <param name="options"></param>
         /// <param name="message"></param>
+        /// <param name="log"></param>
         /// <returns></returns>
-        public static async Task<byte[]> EnqueueUdtAsync(OracleAQQueue queue, OracleAQEnqueueOptions options, OracleAQMessage message)
+        public static async Task<byte[]> EnqueueUdtAsync(
+            OracleAQQueue queue,
+            OracleAQEnqueueOptions options, 
+            OracleAQMessage message,
+            OracleLogger log)
         {
             if (queue == null)
                 throw new ArgumentNullException(nameof(queue));
@@ -533,6 +563,8 @@ END;";
                 throw new ArgumentNullException(nameof(options));
             if (message == null)
                 throw new ArgumentNullException(nameof(message));
+            if (log == null)
+                throw new ArgumentNullException(nameof(log));
 
             // fetch UDT type information
             var payloadType = await queue.GetPayloadTypeAsync();
@@ -610,6 +642,7 @@ END;";
                 messageIdParameter.Size = 16;
                 cmd.Parameters.Add(messageIdParameter);
 
+                log.Debug(cmd.CommandText);
                 await cmd.ExecuteNonQueryAsync();
 
                 // return new message id
@@ -642,8 +675,13 @@ END;";
         /// <param name="queue"></param>
         /// <param name="options"></param>
         /// <param name="message"></param>
+        /// <param name="log"></param>
         /// <returns></returns>
-        public static Task<byte[]> EnqueueXmlAsync(OracleAQQueue queue, OracleAQEnqueueOptions options, OracleAQMessage message)
+        public static Task<byte[]> EnqueueXmlAsync(
+            OracleAQQueue queue, 
+            OracleAQEnqueueOptions options,
+            OracleAQMessage message,
+            OracleLogger log)
         {
             if (queue == null)
                 throw new ArgumentNullException(nameof(queue));
@@ -651,6 +689,8 @@ END;";
                 throw new ArgumentNullException(nameof(options));
             if (message == null)
                 throw new ArgumentNullException(nameof(message));
+            if (log == null)
+                throw new ArgumentNullException(nameof(log));
 
             throw new NotImplementedException();
         }

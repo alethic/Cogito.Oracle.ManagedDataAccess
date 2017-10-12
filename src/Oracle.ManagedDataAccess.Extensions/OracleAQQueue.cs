@@ -18,6 +18,7 @@ namespace Oracle.ManagedDataAccess.Extensions
         IDisposable
     {
 
+        readonly OracleLogger log;
         OracleObjectType payloadType;
         OracleObjectType payloadArrayType;
 
@@ -28,6 +29,7 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// <param name="name"></param>
         public OracleAQQueue(string name)
         {
+            log = new OracleLogger(a => LogEvent?.Invoke(this, new OracleLogEventArgs(a)));
             Name = name;
         }
 
@@ -68,6 +70,11 @@ namespace Oracle.ManagedDataAccess.Extensions
             PayloadTypeName = payloadTypeName;
             PayloadArrayTypeName = payloadArrayTypeName;
         }
+
+        /// <summary>
+        /// Signaled when the Oracle Managed Extensions logs an event of note.
+        /// </summary>
+        public event OracleLogEventHandler LogEvent;
 
         /// <summary>
         /// Name of the queue.
@@ -138,11 +145,11 @@ namespace Oracle.ManagedDataAccess.Extensions
             switch (MessageType)
             {
                 case OracleAQMessageType.Raw:
-                    return OracleAQQueueUtil.DequeueRawAsync(this, options);
+                    return OracleAQQueueUtil.DequeueRawAsync(this, options, log);
                 case OracleAQMessageType.UDT:
-                    return OracleAQQueueUtil.DequeueUdtAsync(this, options);
+                    return OracleAQQueueUtil.DequeueUdtAsync(this, options, log);
                 case OracleAQMessageType.Xml:
-                    return OracleAQQueueUtil.DequeueXmlAsync(this, options);
+                    return OracleAQQueueUtil.DequeueXmlAsync(this, options, log);
                 default:
                     throw new InvalidOperationException();
             }
@@ -173,7 +180,7 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// <param name="options"></param>
         public OracleAQMessage[] DequeueArray(int count, OracleAQDequeueOptions options)
         {
-            return OracleAQQueueUtil.DequeueUdtArrayAsync(this, options, count).Result;
+            return OracleAQQueueUtil.DequeueUdtArrayAsync(this, options, count, log).Result;
         }
 
         /// <summary>
@@ -186,11 +193,11 @@ namespace Oracle.ManagedDataAccess.Extensions
             switch (MessageType)
             {
                 case OracleAQMessageType.Raw:
-                    return OracleAQQueueUtil.DequeueRawArrayAsync(this, options, count);
+                    return OracleAQQueueUtil.DequeueRawArrayAsync(this, options, count, log);
                 case OracleAQMessageType.UDT:
-                    return OracleAQQueueUtil.DequeueUdtArrayAsync(this, options, count);
+                    return OracleAQQueueUtil.DequeueUdtArrayAsync(this, options, count, log);
                 case OracleAQMessageType.Xml:
-                    return OracleAQQueueUtil.DequeueXmlArrayAsync(this, options, count);
+                    return OracleAQQueueUtil.DequeueXmlArrayAsync(this, options, count, log);
                 default:
                     throw new InvalidOperationException();
             }
@@ -241,11 +248,11 @@ namespace Oracle.ManagedDataAccess.Extensions
             switch (MessageType)
             {
                 case OracleAQMessageType.Raw:
-                    return OracleAQQueueUtil.EnqueueRawAsync(this, options, message);
+                    return OracleAQQueueUtil.EnqueueRawAsync(this, options, message, log);
                 case OracleAQMessageType.UDT:
-                    return OracleAQQueueUtil.EnqueueUdtAsync(this, options, message);
+                    return OracleAQQueueUtil.EnqueueUdtAsync(this, options, message, log);
                 case OracleAQMessageType.Xml:
-                    return OracleAQQueueUtil.EnqueueXmlAsync(this, options, message);
+                    return OracleAQQueueUtil.EnqueueXmlAsync(this, options, message, log);
                 default:
                     throw new InvalidOperationException();
             }
@@ -310,7 +317,7 @@ namespace Oracle.ManagedDataAccess.Extensions
 
             // retrieve type
             if (payloadType == null)
-                payloadType = await OracleObjectTypeProvider.GetObjectMetadataAsync(Connection, PayloadTypeName);
+                payloadType = await OracleObjectTypeProvider.GetObjectMetadataAsync(Connection, PayloadTypeName, log);
 
             // failure to get metadata
             if (payloadType == null)
@@ -339,7 +346,7 @@ namespace Oracle.ManagedDataAccess.Extensions
 
             // retrieve type
             if (payloadArrayType == null)
-                payloadArrayType = await OracleObjectTypeProvider.GetObjectMetadataAsync(Connection, PayloadArrayTypeName);
+                payloadArrayType = await OracleObjectTypeProvider.GetObjectMetadataAsync(Connection, PayloadArrayTypeName, log);
 
             return payloadArrayType;
         }

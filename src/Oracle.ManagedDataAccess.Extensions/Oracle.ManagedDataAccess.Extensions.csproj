@@ -73,6 +73,11 @@
     <Compile Include="OracleAQVisibilityMode.cs" />
     <Compile Include="OracleDbTypeDef.cs" />
     <Compile Include="OracleDbTypeNameParser.cs" />
+    <Compile Include="OracleLogEvent.cs" />
+    <Compile Include="OracleLogEventArgs.cs" />
+    <Compile Include="OracleLogEventHandler.cs" />
+    <Compile Include="OracleLogger.cs" />
+    <Compile Include="OracleLogLevel.cs" />
     <Compile Include="OracleObjectDbType.cs" />
     <Compile Include="OracleObjectType.cs" />
     <Compile Include="OracleObjectTypeAttribute.cs" />

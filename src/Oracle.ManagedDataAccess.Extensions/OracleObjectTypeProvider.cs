@@ -12,7 +12,7 @@ namespace Oracle.ManagedDataAccess.Extensions
     /// <summary>
     /// Provides metadata information regarding Oracle types.
     /// </summary>
-    public static class OracleObjectTypeProvider
+    static class OracleObjectTypeProvider
     {
 
         /// <summary>
@@ -21,8 +21,13 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// <param name="connection"></param>
         /// <param name="owner"></param>
         /// <param name="name"></param>
+        /// <param name="log"></param>
         /// <returns></returns>
-        public static async Task<OracleObjectType> GetObjectMetadataAsync(OracleConnection connection, string owner, string name)
+        public static async Task<OracleObjectType> GetObjectMetadataAsync(
+            OracleConnection connection,
+            string owner, 
+            string name,
+            OracleLogger log)
         {
             if (connection == null)
                 throw new ArgumentNullException(nameof(connection));
@@ -30,8 +35,10 @@ namespace Oracle.ManagedDataAccess.Extensions
                 throw new ArgumentNullException(nameof(owner));
             if (string.IsNullOrWhiteSpace(owner))
                 throw new ArgumentNullException(nameof(name));
+            if (log == null)
+                throw new ArgumentNullException(nameof(log));
 
-            return await GetObjectMetadataAsync(connection, owner + "." + name);
+            return await GetObjectMetadataAsync(connection, owner + "." + name, log);
         }
 
         /// <summary>
@@ -39,8 +46,12 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// </summary>
         /// <param name="connection"></param>
         /// <param name="typeName"></param>
+        /// <param name="log"></param>
         /// <returns></returns>
-        public static async Task<OracleObjectType> GetObjectMetadataAsync(OracleConnection connection, string typeName)
+        public static async Task<OracleObjectType> GetObjectMetadataAsync(
+            OracleConnection connection, 
+            string typeName,
+            OracleLogger log)
         {
             if (connection == null)
                 throw new ArgumentNullException(nameof(connection));
@@ -48,12 +59,14 @@ namespace Oracle.ManagedDataAccess.Extensions
                 throw new ArgumentNullException(nameof(typeName));
             if (string.IsNullOrEmpty(typeName))
                 throw new ArgumentOutOfRangeException(nameof(typeName));
+            if (log == null)
+                throw new ArgumentNullException(nameof(log));
 
-            var metadataXml = await GetTypeMetadataXmlAsync(connection, typeName);
+            var metadataXml = await GetTypeMetadataXmlAsync(connection, typeName, log);
             if (metadataXml == null)
                 throw new OracleExtensionsException($"Unable to locate type metadata for '{typeName}'.");
 
-            return await DeserializeTypeMetadata(connection, metadataXml);
+            return await DeserializeTypeMetadata(connection, metadataXml, log);
         }
 
         /// <summary>
@@ -61,13 +74,19 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// </summary>
         /// <param name="connection"></param>
         /// <param name="typeName"></param>
+        /// <param name="log"></param>
         /// <returns></returns>
-        static async Task<XDocument> GetTypeMetadataXmlAsync(OracleConnection connection, string typeName)
+        static async Task<XDocument> GetTypeMetadataXmlAsync(
+            OracleConnection connection,
+            string typeName,
+            OracleLogger log)
         {
             if (connection == null)
                 throw new ArgumentNullException(nameof(connection));
             if (string.IsNullOrWhiteSpace(typeName))
                 throw new ArgumentException(nameof(typeName));
+            if (log == null)
+                throw new ArgumentNullException(nameof(log));
 
             using (var cmd = connection.CreateCommand())
             {
@@ -115,6 +134,7 @@ WHERE       ALL_TYPES.TYPE_NAME = :type_name
                 typeNameParameter.Value = typeName;
                 cmd.Parameters.Add(typeNameParameter);
 
+                log.Debug(cmd.CommandText);
                 var typeXmlValue = (string)await cmd.ExecuteScalarAsync();
                 if (typeXmlValue == null)
                     return null;
@@ -127,14 +147,21 @@ WHERE       ALL_TYPES.TYPE_NAME = :type_name
         /// <summary>
         /// Deserializes type metadata into a <see cref="OracleObjectType"/>.
         /// </summary>
+        /// <param name="connection"></param>
         /// <param name="xml"></param>
+        /// <param name="log"></param>
         /// <returns></returns>
-        static async Task<OracleObjectType> DeserializeTypeMetadata(OracleConnection connection, XDocument xml)
+        static async Task<OracleObjectType> DeserializeTypeMetadata(
+            OracleConnection connection,
+            XDocument xml,
+            OracleLogger log)
         {
             if (connection == null)
                 throw new ArgumentNullException(nameof(connection));
             if (xml == null)
                 throw new ArgumentNullException(nameof(xml));
+            if (log == null)
+                throw new ArgumentNullException(nameof(log));
 
             // remove all empty nodes
             foreach (var x in xml.Descendants().ToList())
@@ -189,7 +216,11 @@ WHERE       ALL_TYPES.TYPE_NAME = :type_name
                     // with Object body
                     if (ELEM_TYPE_OWNER != null)
                     {
-                        var itemObjectType = await GetObjectMetadataAsync(connection, ELEM_TYPE_OWNER, ELEM_TYPE_NAME);
+                        var itemObjectType = await GetObjectMetadataAsync(
+                            connection, 
+                            ELEM_TYPE_OWNER, 
+                            ELEM_TYPE_NAME,
+                            log);
                         if (itemObjectType == null)
                             throw new NullReferenceException($"Could not locate element type {ELEM_TYPE_OWNER}.{ELEM_TYPE_NAME}");
 
@@ -218,7 +249,11 @@ WHERE       ALL_TYPES.TYPE_NAME = :type_name
                     // with Object body
                     if (ELEM_TYPE_OWNER != null)
                     {
-                        var itemObjectType = await GetObjectMetadataAsync(connection, ELEM_TYPE_OWNER, ELEM_TYPE_NAME);
+                        var itemObjectType = await GetObjectMetadataAsync(
+                            connection, 
+                            ELEM_TYPE_OWNER,
+                            ELEM_TYPE_NAME,
+                            log);
                         if (itemObjectType == null)
                             throw new NullReferenceException($"Could not locate element type {ELEM_TYPE_OWNER}.{ELEM_TYPE_NAME}");
 
