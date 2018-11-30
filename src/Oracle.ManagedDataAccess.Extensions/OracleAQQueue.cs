@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Oracle.ManagedDataAccess.Client;
@@ -114,42 +115,42 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// <summary>
         /// This instance method dequeues messages from a queue using the <see cref="DequeueOptions"/> for the instance.
         /// </summary>
-        public OracleAQMessage Dequeue()
+        public OracleAQMessage Dequeue(CancellationToken cancellationToken = default)
         {
-            return DequeueAsync().Result;
+            return DequeueAsync(cancellationToken).Result;
         }
 
         /// <summary>
         /// This instance method dequeues messages from a queue using the <see cref="DequeueOptions"/> for the instance.
         /// </summary>
-        public Task<OracleAQMessage> DequeueAsync()
+        public Task<OracleAQMessage> DequeueAsync(CancellationToken cancellationToken = default)
         {
-            return DequeueAsync(DequeueOptions);
+            return DequeueAsync(DequeueOptions, cancellationToken);
         }
 
         /// <summary>
         /// This instance method dequeues messages from a queue using the supplied dequeue options.
         /// </summary>
         /// <param name="options"></param>
-        public OracleAQMessage Dequeue(OracleAQDequeueOptions options)
+        public OracleAQMessage Dequeue(OracleAQDequeueOptions options, CancellationToken cancellationToken = default)
         {
-            return DequeueAsync(options).Result;
+            return DequeueAsync(options, cancellationToken).Result;
         }
 
         /// <summary>
         /// This instance method dequeues messages from a queue using the supplied dequeue options.
         /// </summary>
         /// <param name="options"></param>
-        public Task<OracleAQMessage> DequeueAsync(OracleAQDequeueOptions options)
+        public Task<OracleAQMessage> DequeueAsync(OracleAQDequeueOptions options, CancellationToken cancellationToken = default)
         {
             switch (MessageType)
             {
                 case OracleAQMessageType.Raw:
-                    return OracleAQQueueUtil.DequeueRawAsync(this, options, log);
+                    return OracleAQQueueUtil.DequeueRawAsync(this, options, log, cancellationToken);
                 case OracleAQMessageType.UDT:
-                    return OracleAQQueueUtil.DequeueUdtAsync(this, options, log);
+                    return OracleAQQueueUtil.DequeueUdtAsync(this, options, log, cancellationToken);
                 case OracleAQMessageType.Xml:
-                    return OracleAQQueueUtil.DequeueXmlAsync(this, options, log);
+                    return OracleAQQueueUtil.DequeueXmlAsync(this, options, log, cancellationToken);
                 default:
                     throw new InvalidOperationException();
             }
@@ -159,18 +160,18 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// This instance method dequeues multiple messages from a queue using the <see cref=""/> of the instance.
         /// </summary>
         /// <param name="count"></param>
-        public OracleAQMessage[] DequeueArray(int count)
+        public OracleAQMessage[] DequeueArray(int count, CancellationToken cancellationToken = default)
         {
-            return DequeueArray(count, DequeueOptions);
+            return DequeueArray(count, DequeueOptions, cancellationToken);
         }
 
         /// <summary>
         /// This instance method dequeues multiple messages from a queue using the <see cref=""/> of the instance.
         /// </summary>
         /// <param name="count"></param>
-        public Task<OracleAQMessage[]> DequeueArrayAsync(int count)
+        public Task<OracleAQMessage[]> DequeueArrayAsync(int count, CancellationToken cancellationToken = default)
         {
-            return DequeueArrayAsync(count, DequeueOptions);
+            return DequeueArrayAsync(count, DequeueOptions, cancellationToken);
         }
 
         /// <summary>
@@ -178,9 +179,9 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// </summary>
         /// <param name="count"></param>
         /// <param name="options"></param>
-        public OracleAQMessage[] DequeueArray(int count, OracleAQDequeueOptions options)
+        public OracleAQMessage[] DequeueArray(int count, OracleAQDequeueOptions options, CancellationToken cancellationToken = default)
         {
-            return OracleAQQueueUtil.DequeueUdtArrayAsync(this, options, count, log).Result;
+            return OracleAQQueueUtil.DequeueUdtArrayAsync(this, options, count, log, cancellationToken).Result;
         }
 
         /// <summary>
@@ -188,16 +189,16 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// </summary>
         /// <param name="count"></param>
         /// <param name="options"></param>
-        public Task<OracleAQMessage[]> DequeueArrayAsync(int count, OracleAQDequeueOptions options)
+        public Task<OracleAQMessage[]> DequeueArrayAsync(int count, OracleAQDequeueOptions options, CancellationToken cancellationToken = default)
         {
             switch (MessageType)
             {
                 case OracleAQMessageType.Raw:
-                    return OracleAQQueueUtil.DequeueRawArrayAsync(this, options, count, log);
+                    return OracleAQQueueUtil.DequeueRawArrayAsync(this, options, count, log, cancellationToken);
                 case OracleAQMessageType.UDT:
-                    return OracleAQQueueUtil.DequeueUdtArrayAsync(this, options, count, log);
+                    return OracleAQQueueUtil.DequeueUdtArrayAsync(this, options, count, log, cancellationToken);
                 case OracleAQMessageType.Xml:
-                    return OracleAQQueueUtil.DequeueXmlArrayAsync(this, options, count, log);
+                    return OracleAQQueueUtil.DequeueXmlArrayAsync(this, options, count, log, cancellationToken);
                 default:
                     throw new InvalidOperationException();
             }
@@ -207,9 +208,9 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// This instance method enqueues messages to a queue using the EnqueueOptions of the instance.
         /// </summary>
         /// <param name="message"></param>
-        public byte[] Enqueue(OracleAQMessage message)
+        public byte[] Enqueue(OracleAQMessage message, CancellationToken cancellationToken = default)
         {
-            return EnqueueAsync(message).Result;
+            return EnqueueAsync(message, cancellationToken).Result;
         }
 
         /// <summary>
@@ -217,25 +218,25 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        public Task<byte[]> EnqueueAsync(OracleAQMessage message)
+        public Task<byte[]> EnqueueAsync(OracleAQMessage message, CancellationToken cancellationToken = default)
         {
-            return EnqueueAsync(message, EnqueueOptions);
+            return EnqueueAsync(message, EnqueueOptions, cancellationToken);
         }
 
         /// <summary>
         /// This instance method enqueues messages to a queue using the supplied enqueue options.
         /// </summary>
         /// <param name="options"></param>
-        public byte[] Enqueue(OracleAQMessage message, OracleAQEnqueueOptions options)
+        public byte[] Enqueue(OracleAQMessage message, OracleAQEnqueueOptions options, CancellationToken cancellationToken = default)
         {
-            return EnqueueAsync(message, options).Result;
+            return EnqueueAsync(message, options, cancellationToken).Result;
         }
 
         /// <summary>
         /// This instance method enqueues messages to a queue using the supplied enqueue options.
         /// </summary>
         /// <param name="options"></param>
-        public Task<byte[]> EnqueueAsync(OracleAQMessage message, OracleAQEnqueueOptions options)
+        public Task<byte[]> EnqueueAsync(OracleAQMessage message, OracleAQEnqueueOptions options, CancellationToken cancellationToken = default)
         {
             if (message == null)
                 throw new ArgumentNullException(nameof(message));
@@ -248,11 +249,11 @@ namespace Oracle.ManagedDataAccess.Extensions
             switch (MessageType)
             {
                 case OracleAQMessageType.Raw:
-                    return OracleAQQueueUtil.EnqueueRawAsync(this, options, message, log);
+                    return OracleAQQueueUtil.EnqueueRawAsync(this, options, message, log, cancellationToken);
                 case OracleAQMessageType.UDT:
-                    return OracleAQQueueUtil.EnqueueUdtAsync(this, options, message, log);
+                    return OracleAQQueueUtil.EnqueueUdtAsync(this, options, message, log, cancellationToken);
                 case OracleAQMessageType.Xml:
-                    return OracleAQQueueUtil.EnqueueXmlAsync(this, options, message, log);
+                    return OracleAQQueueUtil.EnqueueXmlAsync(this, options, message, log, cancellationToken);
                 default:
                     throw new InvalidOperationException();
             }
@@ -262,9 +263,9 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// This instance method enqueues multiple messages to a queue using the EnqueueOptions of the instance.
         /// </summary>
         /// <param name="messages"></param>
-        public byte[][] EnqueueArray(OracleAQMessage[] messages)
+        public byte[][] EnqueueArray(OracleAQMessage[] messages, CancellationToken cancellationToken = default)
         {
-            return EnqueueArray(messages, EnqueueOptions);
+            return EnqueueArray(messages, EnqueueOptions, cancellationToken);
         }
 
         /// <summary>
@@ -272,9 +273,9 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// </summary>
         /// <param name="messages"></param>
         /// <param name="options"></param>
-        public byte[][] EnqueueArray(OracleAQMessage[] messages, OracleAQEnqueueOptions options)
+        public byte[][] EnqueueArray(OracleAQMessage[] messages, OracleAQEnqueueOptions options, CancellationToken cancellationToken = default)
         {
-            return EnqueueArrayAsync(messages, options).Result;
+            return EnqueueArrayAsync(messages, options, cancellationToken).Result;
         }
 
         /// <summary>
@@ -282,7 +283,7 @@ namespace Oracle.ManagedDataAccess.Extensions
         /// </summary>
         /// <param name="messages"></param>
         /// <param name="options"></param>
-        public Task<byte[][]> EnqueueArrayAsync(OracleAQMessage[] messages, OracleAQEnqueueOptions options)
+        public Task<byte[][]> EnqueueArrayAsync(OracleAQMessage[] messages, OracleAQEnqueueOptions options, CancellationToken cancellationToken = default)
         {
             if (messages == null)
                 throw new ArgumentNullException(nameof(messages));
@@ -296,11 +297,11 @@ namespace Oracle.ManagedDataAccess.Extensions
             switch (MessageType)
             {
                 case OracleAQMessageType.Raw:
-                    return OracleAQQueueUtil.EnqueueRawArrayAsync(this, options, messages);
+                    return OracleAQQueueUtil.EnqueueRawArrayAsync(this, options, messages, cancellationToken);
                 case OracleAQMessageType.UDT:
-                    return OracleAQQueueUtil.EnqueueUdtArrayAsync(this, options, messages);
+                    return OracleAQQueueUtil.EnqueueUdtArrayAsync(this, options, messages, cancellationToken);
                 case OracleAQMessageType.Xml:
-                    return OracleAQQueueUtil.EnqueueXmlArrayAsync(this, options, messages);
+                    return OracleAQQueueUtil.EnqueueXmlArrayAsync(this, options, messages, cancellationToken);
                 default:
                     throw new InvalidOperationException();
             }

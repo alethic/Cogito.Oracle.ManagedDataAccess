@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -62,7 +63,8 @@ namespace Oracle.ManagedDataAccess.Extensions
         public static async Task<OracleAQMessage> DequeueRawAsync(
             OracleAQQueue queue,
             OracleAQDequeueOptions options,
-            OracleLogger logger)
+            OracleLogger logger,
+            CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
@@ -79,7 +81,8 @@ namespace Oracle.ManagedDataAccess.Extensions
             OracleAQQueue queue,
             OracleAQDequeueOptions options,
             int count,
-            OracleLogger logger)
+            OracleLogger logger,
+            CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
@@ -95,7 +98,8 @@ namespace Oracle.ManagedDataAccess.Extensions
         public static async Task<OracleAQMessage> DequeueUdtAsync(
             OracleAQQueue queue,
             OracleAQDequeueOptions options,
-            OracleLogger log)
+            OracleLogger log,
+            CancellationToken cancellationToken)
         {
             if (queue == null)
                 throw new ArgumentNullException(nameof(queue));
@@ -219,7 +223,7 @@ END;";
                 cmd.Parameters.Add(messageCountParameter);
 
                 log.Debug(cmd.CommandText);
-                await cmd.ExecuteNonQueryAsync();
+                await cmd.ExecuteNonQueryAsync(cancellationToken);
 
                 // parses the result into the set of messages
                 return ((OracleDecimal)messageCountParameter.Value).ToInt32() == 1 ? ReadUdtMessage(
@@ -242,7 +246,8 @@ END;";
             OracleAQQueue queue,
             OracleAQDequeueOptions options,
             int count,
-            OracleLogger log)
+            OracleLogger log,
+            CancellationToken cancellationToken)
         {
             if (queue == null)
                 throw new ArgumentNullException(nameof(queue));
@@ -406,7 +411,7 @@ END;";
                 cmd.Parameters.Add(messageCountParameter);
 
                 log.Debug(cmd.CommandText);
-                await cmd.ExecuteNonQueryAsync();
+                await cmd.ExecuteNonQueryAsync(cancellationToken);
 
                 // parses the result set into the set of messages
                 return ReadUdtMessages(
@@ -429,7 +434,8 @@ END;";
         public static async Task<OracleAQMessage> DequeueXmlAsync(
             OracleAQQueue queue,
             OracleAQDequeueOptions options,
-            OracleLogger logger)
+            OracleLogger logger,
+            CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
@@ -446,7 +452,8 @@ END;";
             OracleAQQueue queue,
             OracleAQDequeueOptions options,
             int count,
-            OracleLogger logger)
+            OracleLogger logger,
+            CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
@@ -471,7 +478,7 @@ END;";
             if (payloads == null)
                 throw new ArgumentNullException(nameof(payloads));
 
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
                 yield return ReadUdtMessage(payloadType, ids[i], properties[i], payloads[i]);
         }
 
@@ -508,9 +515,10 @@ END;";
         /// <returns></returns>
         public static Task<byte[]> EnqueueRawAsync(
             OracleAQQueue queue,
-            OracleAQEnqueueOptions options, 
+            OracleAQEnqueueOptions options,
             OracleAQMessage message,
-            OracleLogger log)
+            OracleLogger log,
+            CancellationToken cancellationToken)
         {
             if (queue == null)
                 throw new ArgumentNullException(nameof(queue));
@@ -531,7 +539,11 @@ END;";
         /// <param name="options"></param>
         /// <param name="messages"></param>
         /// <returns></returns>
-        public static Task<byte[][]> EnqueueRawArrayAsync(OracleAQQueue queue, OracleAQEnqueueOptions options, OracleAQMessage[] messages)
+        public static Task<byte[][]> EnqueueRawArrayAsync(
+            OracleAQQueue queue,
+            OracleAQEnqueueOptions options,
+            OracleAQMessage[] messages,
+            CancellationToken cancellationToken)
         {
             if (queue == null)
                 throw new ArgumentNullException(nameof(queue));
@@ -553,9 +565,10 @@ END;";
         /// <returns></returns>
         public static async Task<byte[]> EnqueueUdtAsync(
             OracleAQQueue queue,
-            OracleAQEnqueueOptions options, 
+            OracleAQEnqueueOptions options,
             OracleAQMessage message,
-            OracleLogger log)
+            OracleLogger log,
+            CancellationToken cancellationToken)
         {
             if (queue == null)
                 throw new ArgumentNullException(nameof(queue));
@@ -643,7 +656,7 @@ END;";
                 cmd.Parameters.Add(messageIdParameter);
 
                 log.Debug(cmd.CommandText);
-                await cmd.ExecuteNonQueryAsync();
+                await cmd.ExecuteNonQueryAsync(cancellationToken);
 
                 // return new message id
                 return ((OracleBinary)messageIdParameter.Value).Value;
@@ -657,7 +670,11 @@ END;";
         /// <param name="options"></param>
         /// <param name="messages"></param>
         /// <returns></returns>
-        public static Task<byte[][]> EnqueueUdtArrayAsync(OracleAQQueue queue, OracleAQEnqueueOptions options, OracleAQMessage[] messages)
+        public static Task<byte[][]> EnqueueUdtArrayAsync(
+            OracleAQQueue queue,
+            OracleAQEnqueueOptions options,
+            OracleAQMessage[] messages,
+            CancellationToken cancellationToken)
         {
             if (queue == null)
                 throw new ArgumentNullException(nameof(queue));
@@ -678,10 +695,11 @@ END;";
         /// <param name="log"></param>
         /// <returns></returns>
         public static Task<byte[]> EnqueueXmlAsync(
-            OracleAQQueue queue, 
+            OracleAQQueue queue,
             OracleAQEnqueueOptions options,
             OracleAQMessage message,
-            OracleLogger log)
+            OracleLogger log,
+            CancellationToken cancellationToken)
         {
             if (queue == null)
                 throw new ArgumentNullException(nameof(queue));
@@ -702,7 +720,11 @@ END;";
         /// <param name="options"></param>
         /// <param name="messages"></param>
         /// <returns></returns>
-        public static Task<byte[][]> EnqueueXmlArrayAsync(OracleAQQueue queue, OracleAQEnqueueOptions options, OracleAQMessage[] messages)
+        public static Task<byte[][]> EnqueueXmlArrayAsync(
+            OracleAQQueue queue,
+            OracleAQEnqueueOptions options,
+            OracleAQMessage[] messages,
+            CancellationToken cancellationToken)
         {
             if (queue == null)
                 throw new ArgumentNullException(nameof(queue));
