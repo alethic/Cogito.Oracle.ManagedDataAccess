@@ -1,0 +1,61 @@
+queue: FSX
+
+variables:
+    BuildPlatform: Any CPU
+    BuildConfiguration: Release
+
+steps:
+
+- task: gittools.gitversion.gitversion-task.GitVersion@3
+
+- task: NuGetToolInstaller@0
+  displayName: Use NuGet 4.x
+  inputs:
+      versionSpec: 4.x
+      checkLatest: true
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: src\Oracle.ManagedDataAccess.Extensions.sln
+    vstsFeed: '74a5a491-5c25-48f8-a89a-00d9eded165b'
+
+- task: DotNetCoreCLI@1
+  inputs:
+    command: msbuild
+    projects: '**\*.csproj'
+    arguments: '/t:Restore /p:PackageVersion=$(GitVersion.NuGetVersion) /p:Version=$(GitVersion.NuGetVersion) /p:Configuration=$(BuildConfiguration)'
+
+- task: VSBuild@1
+  displayName:  Oracle.ManagedDataAccess.Extensions
+  inputs:
+    solution: src\Oracle.ManagedDataAccess.Extensions.sln
+    vsVersion: 15.0
+    platform: $(BuildPlatform)
+    configuration: $(BuildConfiguration)
+    maximumCpuCount: true
+    msbuildArchitecture: x64
+    msbuildArgs: /p:PackageOutputPath=$(Build.ArtifactStagingDirectory)\Oracle.ManagedDataAccess.Extensions /p:PackageVersion=$(GitVersion.NuGetVersion) /p:AssemblyVersion=$(GitVersion.AssemblySemVer)
+    
+- task: VSTest@2
+  displayName: Run Unit Tests
+  inputs:
+    testSelector: testAssemblies
+    searchFolder: src
+    testAssemblyVer2: |
+      **\*test*.dll
+      !**\*TestAdapter.dll
+      !**\obj\**
+    vsTestVersion: 15.0
+    otherConsoleOptions: /platform:x64
+    platform: $(BuildPlatform)
+    configuration: $(BuildConfiguration)
+    runInParallel: true
+    codeCoverageEnabled: true
+    publishRunAttachments: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Oracle.ManagedDataAccess.Extensions NuGet'
+  inputs:
+    pathToPublish: $(Build.ArtifactStagingDirectory)\Oracle.ManagedDataAccess.Extensions
+    artifactType: container
+    artifactName: Oracle.ManagedDataAccess.Extensions
