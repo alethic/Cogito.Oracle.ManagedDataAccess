@@ -1,5 +1,3 @@
-queue: FSX
-
 variables:
     BuildPlatform: Any CPU
     BuildConfiguration: Release
