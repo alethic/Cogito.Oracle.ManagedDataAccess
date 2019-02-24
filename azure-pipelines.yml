@@ -6,7 +6,7 @@ variables:
 
 steps:
 
-- task: gittools.gitversion.gitversion-task.GitVersion@3
+- task: gittools.gitversion.gitversion-task.GitVersion@4
 
 - task: NuGetToolInstaller@0
   displayName: Use NuGet 4.x
@@ -59,3 +59,8 @@ steps:
     pathToPublish: $(Build.ArtifactStagingDirectory)\Oracle.ManagedDataAccess.Extensions
     artifactType: container
     artifactName: Oracle.ManagedDataAccess.Extensions
+
+- task: PublishSymbols@2
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  inputs:
+    SymbolServerType: TeamServices
