@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>0c17b94b-2637-4856-8cc8-eb0f89ae19a2</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Oracle.ManagedDataAccess.Extensions.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)EnumExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleAQAgent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleAQDequeueMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleAQDequeueOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleAQEnqueueOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleAQException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleAQMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleAQMessageDeliveryMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleAQMessageProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleAQMessageState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleAQMessageType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleAQNavigationMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleAQQueue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleAQQueueType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleAQQueueUtil.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleAQVisibilityMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleDbTypeDef.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleDbTypeNameParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleErrorSeverity.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleExtensionsException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleLogEvent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleLogEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleLogEventHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleLogger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleLogLevel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleObjectDbType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleObjectType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleObjectTypeAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleObjectTypeAttributeCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleObjectTypeProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleObjectValue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OracleObjectXmlTransferSerializer.cs" />
+  </ItemGroup>
+</Project>
