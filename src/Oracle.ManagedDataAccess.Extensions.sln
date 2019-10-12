@@ -9,12 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oracle.ManagedDataAccess.Ex
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BDD0D0D4-8D28-4B43-BFD4-51B9381506C5}"
 	ProjectSection(SolutionItems) = preProject
+		..\appveyor.yml = ..\appveyor.yml
 		..\azure-pipelines.yml = ..\azure-pipelines.yml
 	EndProjectSection
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Oracle.ManagedDataAccess.Extensions.Shared", "Oracle.ManagedDataAccess.Extensions.Shared\Oracle.ManagedDataAccess.Extensions.Shared.shproj", "{0C17B94B-2637-4856-8CC8-EB0F89AE19A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oracle.ManagedDataAccess.Extensions.Core", "Oracle.ManagedDataAccess.Extensions.Core\Oracle.ManagedDataAccess.Extensions.Core.csproj", "{5AC14BF1-8CA8-4377-944E-28E5456E2A0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oracle.ManagedDataAccess.Extensions.Core", "Oracle.ManagedDataAccess.Extensions.Core\Oracle.ManagedDataAccess.Extensions.Core.csproj", "{5AC14BF1-8CA8-4377-944E-28E5456E2A0E}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
