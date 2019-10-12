@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Oracle.ManagedDataAccess.Extensions
+namespace Cogito.Oracle.ManagedDataAccess
 {
 
     /// <summary>

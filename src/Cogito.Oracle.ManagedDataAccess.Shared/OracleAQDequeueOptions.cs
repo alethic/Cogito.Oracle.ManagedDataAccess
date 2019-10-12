@@ -1,4 +1,4 @@
-﻿namespace Oracle.ManagedDataAccess.Extensions
+﻿namespace Cogito.Oracle.ManagedDataAccess
 {
 
     /// <summary>

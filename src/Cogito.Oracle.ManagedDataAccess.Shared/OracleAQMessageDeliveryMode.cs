@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Oracle.ManagedDataAccess.Extensions
+namespace Cogito.Oracle.ManagedDataAccess
 {
 
     public enum OracleAQMessageDeliveryMode

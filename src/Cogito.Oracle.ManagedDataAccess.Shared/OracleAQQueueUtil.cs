@@ -11,7 +11,7 @@ using Cogito;
 using Oracle.ManagedDataAccess.Client;
 using Oracle.ManagedDataAccess.Types;
 
-namespace Oracle.ManagedDataAccess.Extensions
+namespace Cogito.Oracle.ManagedDataAccess
 {
 
     /// <summary>

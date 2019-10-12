@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Oracle.ManagedDataAccess.Extensions
+namespace Cogito.Oracle.ManagedDataAccess
 {
 
     /// <summary>

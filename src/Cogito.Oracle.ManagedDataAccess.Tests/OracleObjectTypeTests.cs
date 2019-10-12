@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Oracle.ManagedDataAccess.Client;
 
-namespace Oracle.ManagedDataAccess.Extensions.Tests
+namespace Cogito.Oracle.ManagedDataAccess.Tests
 {
 
     [TestClass]

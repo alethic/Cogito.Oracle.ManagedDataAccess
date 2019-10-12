@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Oracle.ManagedDataAccess.Extensions
+namespace Cogito.Oracle.ManagedDataAccess
 {
 
     public class OracleLogEventArgs :

@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 using Oracle.ManagedDataAccess.Client;
 
-namespace Oracle.ManagedDataAccess.Extensions
+namespace Cogito.Oracle.ManagedDataAccess
 {
 
     /// <summary>

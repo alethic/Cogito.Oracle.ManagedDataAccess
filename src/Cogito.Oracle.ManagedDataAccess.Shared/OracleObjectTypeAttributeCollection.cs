@@ -5,7 +5,7 @@ using System.Linq;
 
 using Cogito.Collections;
 
-namespace Oracle.ManagedDataAccess.Extensions
+namespace Cogito.Oracle.ManagedDataAccess
 {
 
     /// <summary>
