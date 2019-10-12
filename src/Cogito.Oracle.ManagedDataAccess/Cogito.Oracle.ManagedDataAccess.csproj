@@ -8,7 +8,7 @@
         <LangVersion>7.3</LangVersion>
     </PropertyGroup>
 
-    <Import Project="..\Oracle.ManagedDataAccess.Extensions.Shared\Oracle.ManagedDataAccess.Extensions.Shared.projitems" Label="Shared" />
+    <Import Project="..\Cogito.Oracle.ManagedDataAccess.Shared\Oracle.ManagedDataAccess.Extensions.Shared.projitems" Label="Shared" />
 
     <ItemGroup>
         <PackageReference Include="Cogito.Core" Version="3.0.0" />

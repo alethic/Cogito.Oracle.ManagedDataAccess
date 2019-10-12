@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29209.62
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BDD0D0D4-8D28-4B43-BFD4-51B9381506C5}"
+	ProjectSection(SolutionItems) = preProject
+		..\appveyor.yml = ..\appveyor.yml
+		..\azure-pipelines.yml = ..\azure-pipelines.yml
+	EndProjectSection
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Cogito.Oracle.ManagedDataAccess.Shared", "Cogito.Oracle.ManagedDataAccess.Shared\Cogito.Oracle.ManagedDataAccess.Shared.shproj", "{0C17B94B-2637-4856-8CC8-EB0F89AE19A2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cogito.Oracle.ManagedDataAccess", "Cogito.Oracle.ManagedDataAccess\Cogito.Oracle.ManagedDataAccess.csproj", "{3FAA2D9F-42D5-4B50-B689-60FB4EE408DA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cogito.Oracle.ManagedDataAccess.Core", "Cogito.Oracle.ManagedDataAccess.Core\Cogito.Oracle.ManagedDataAccess.Core.csproj", "{EB08FE02-AAD5-4A1C-91B7-16DAE4041041}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cogito.Oracle.ManagedDataAccess.Tests", "Cogito.Oracle.ManagedDataAccess.Tests\Cogito.Oracle.ManagedDataAccess.Tests.csproj", "{287C6C02-A554-44B4-84FB-70A1C8EE668D}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Cogito.Oracle.ManagedDataAccess.Shared\Oracle.ManagedDataAccess.Extensions.Shared.projitems*{0c17b94b-2637-4856-8cc8-eb0f89ae19a2}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3FAA2D9F-42D5-4B50-B689-60FB4EE408DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FAA2D9F-42D5-4B50-B689-60FB4EE408DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FAA2D9F-42D5-4B50-B689-60FB4EE408DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FAA2D9F-42D5-4B50-B689-60FB4EE408DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB08FE02-AAD5-4A1C-91B7-16DAE4041041}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB08FE02-AAD5-4A1C-91B7-16DAE4041041}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB08FE02-AAD5-4A1C-91B7-16DAE4041041}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB08FE02-AAD5-4A1C-91B7-16DAE4041041}.Release|Any CPU.Build.0 = Release|Any CPU
+		{287C6C02-A554-44B4-84FB-70A1C8EE668D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{287C6C02-A554-44B4-84FB-70A1C8EE668D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{287C6C02-A554-44B4-84FB-70A1C8EE668D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{287C6C02-A554-44B4-84FB-70A1C8EE668D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2B7763D9-EC23-472A-B413-34B6BA005624}
+	EndGlobalSection
+EndGlobal
