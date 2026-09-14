@@ -1,0 +1,18 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
+    <File Path=".github/workflows/Cogito.Oracle.ManagedDataAccess.yml" />
+    <File Path="Cogito.Oracle.ManagedDataAccess.dist.msbuildproj" />
+    <File Path="GitVersion.yml" />
+    <File Path="global.json" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="Cogito.Oracle.ManagedDataAccess.Shared/Cogito.Oracle.ManagedDataAccess.Shared.shproj" />
+  <Project Path="src/Cogito.Oracle.ManagedDataAccess.Core/Cogito.Oracle.ManagedDataAccess.Core.csproj" />
+  <Project Path="src/Cogito.Oracle.ManagedDataAccess.Tests/Cogito.Oracle.ManagedDataAccess.Tests.csproj" />
+  <Project Path="src/Cogito.Oracle.ManagedDataAccess/Cogito.Oracle.ManagedDataAccess.csproj" />
+  <Folder Name="/dist/">
+    <Project Path="src/dist-nuget/dist-nuget.csproj" />
+  </Folder>
+</Solution>
